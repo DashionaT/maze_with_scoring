@@ -42,8 +42,14 @@ h_wall5 =  [600, 650, 200, 25]
 h_wall6 =  [850, 575, 200, 25]
 h_wall7 =  [850, 475, 200, 25]
 h_wall8 =  [850, 375, 200, 25]
+h_wall9 =  [850, 275, 200, 25]
+h_wall10 = [850, 175, 200, 25]
+h_wall11 = [850, 75, 200, 25]
+h_wall12 = [850, 675, 200, 25]
+v_wall13 =  [200, -20, 25, 200]
+v_wall14 =  [300, -20, 25, 200]
 
-walls = [h_wall1, h_wall2, v_wall3, v_wall4, h_wall5, h_wall6, h_wall7, h_wall8]
+walls = [h_wall1, h_wall2, v_wall3, v_wall4, h_wall5, h_wall6, h_wall7, h_wall8, h_wall9, h_wall10, h_wall11, h_wall12, v_wall13, v_wall14]
 
 # Make coins
 coin1 = [300, 500, 25, 25]
