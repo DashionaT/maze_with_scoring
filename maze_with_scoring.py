@@ -97,6 +97,16 @@ while not done:
     ''' move the player in horizontal direction '''
     player1[0] += vel1[0]
 
+    '''Timer'''
+    if stage == PLAYING:
+        ticks += 1
+
+        if ticks % refresh_rate == 0:
+            time_remaining -= 1
+
+        if time_remaining == 0:
+            stage = END
+            
     ''' resolve collisions horizontally '''
     for w in walls:
         if intersects.rect_rect(player1, w):        
