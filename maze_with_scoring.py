@@ -7,10 +7,10 @@ pygame.init()
 
 
 # Window
-WIDTH = 1000
-HEIGHT = 800
+WIDTH = 800
+HEIGHT = 600
 SIZE = (WIDTH, HEIGHT)
-TITLE = "Coin Hunt"
+TITLE = "Maze"
 screen = pygame.display.set_mode(SIZE)
 pygame.display.set_caption(TITLE)
 
@@ -34,30 +34,18 @@ player1_speed = 5
 score1 = 0
 
 # make walls
-h_wall1 =  [300, 275, 200, 25]
-h_wall2 =  [400, 450, 200, 25]
-v_wall3 =  [100, 100, 25, 200]
-v_wall4 =  [200, 400, 25, 200]
-h_wall5 =  [600, 650, 200, 25]
-h_wall6 =  [850, 575, 200, 25]
-h_wall7 =  [850, 475, 200, 25]
-h_wall8 =  [850, 375, 200, 25]
-h_wall9 =  [850, 275, 200, 25]
-h_wall10 = [850, 175, 200, 25]
-h_wall11 = [850, 75, 200, 25]
-h_wall12 = [850, 675, 200, 25]
-v_wall13 =  [200, -20, 25, 200]
-v_wall14 =  [300, -20, 25, 200]
+wall1 =  [300, 275, 200, 25]
+wall2 =  [400, 450, 200, 25]
+wall3 =  [100, 100, 25, 200]
 
-walls = [h_wall1, h_wall2, v_wall3, v_wall4, h_wall5, h_wall6, h_wall7, h_wall8, h_wall9, h_wall10, h_wall11, h_wall12, v_wall13, v_wall14]
+walls = [wall1, wall2, wall3]
 
 # Make coins
 coin1 = [300, 500, 25, 25]
 coin2 = [400, 200, 25, 25]
 coin3 = [150, 150, 25, 25]
-coin4 = [650, 300, 25, 25]
 
-coins = [coin1, coin2, coin3, coin4]
+coins = [coin1, coin2, coin3]
 
 
 # Game loop
@@ -97,16 +85,6 @@ while not done:
     ''' move the player in horizontal direction '''
     player1[0] += vel1[0]
 
-    '''Timer'''
-    if stage == PLAYING:
-        ticks += 1
-
-        if ticks % refresh_rate == 0:
-            time_remaining -= 1
-
-        if time_remaining == 0:
-            stage = END
-            
     ''' resolve collisions horizontally '''
     for w in walls:
         if intersects.rect_rect(player1, w):        
