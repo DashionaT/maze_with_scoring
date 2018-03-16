@@ -59,6 +59,16 @@ coin4 = [650, 300, 25, 25]
 
 coins = [coin1, coin2, coin3, coin4]
 
+def setup():
+    global block_pos, block_vel, size, stage, time_remaining, ticks
+    
+    block_pos = [375, 275]
+    block_vel = [0, 0]
+    size = 50
+
+    stage = START
+    time_remaining = 10
+    ticks = 0
 
 # Game loop
 win = False
