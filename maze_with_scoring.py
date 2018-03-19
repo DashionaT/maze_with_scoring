@@ -26,12 +26,11 @@ BLACK = (0, 0, 0)
 YELLOW = (255, 255, 0)
 GREEN = (0, 255, 0)
 
+# stages
+START = 0
+PLAYING = 1
+END = 2
 
-# Make a player
-player1 =  [200, 150, 25, 25]
-vel1 = [0, 0]
-player1_speed = 5
-score1 = 0
 
 # make walls
 h_wall1 =  [300, 275, 200, 25]
@@ -49,7 +48,9 @@ h_wall12 = [850, 675, 200, 25]
 v_wall13 =  [200, -20, 25, 200]
 v_wall14 =  [300, -20, 25, 200]
 
-walls = [h_wall1, h_wall2, v_wall3, v_wall4, h_wall5, h_wall6, h_wall7, h_wall8, h_wall9, h_wall10, h_wall11, h_wall12, v_wall13, v_wall14]
+walls = [h_wall1, h_wall2, v_wall3, v_wall4, h_wall5,
+         h_wall6, h_wall7, h_wall8, h_wall9, h_wall10,
+         h_wall11, h_wall12, v_wall13, v_wall14]
 
 # Make coins
 coin1 = [300, 500, 25, 25]
@@ -57,23 +58,26 @@ coin2 = [400, 200, 25, 25]
 coin3 = [150, 150, 25, 25]
 coin4 = [650, 300, 25, 25]
 
-coins = [coin1, coin2, coin3, coin4]
 
 def setup():
-    global block_pos, block_vel, size, stage, time_remaining, ticks
+    global stage, time_remaining, ticks, player1, vel1, player1_speed, score1, coins
     
-    block_pos = [375, 275]
-    block_vel = [0, 0]
-    size = 50
-
     stage = START
     time_remaining = 10
     ticks = 0
 
+    # Make a player
+    player1 =  [25, 25, 25, 25]
+    vel1 = [0, 0]
+    player1_speed = 5
+    score1 = 0
+    coins = [coin1, coin2, coin3, coin4]
+    
 # Game loop
 win = False
 done = False
 
+setup()
 while not done:
     # Event processing (React to key presses, mouse clicks, etc.)
     ''' for now, we'll just check to see if the X is clicked '''
@@ -82,7 +86,11 @@ while not done:
             done = True
 
     pressed = pygame.key.get_pressed()
-
+    
+if stage == START:
+    if event.key == pygame.K_SPACE:
+        stage = PLAYING
+                    
     up = pressed[pygame.K_UP]
     down = pressed[pygame.K_DOWN]
     left = pressed[pygame.K_LEFT]
@@ -104,18 +112,11 @@ while not done:
         
         
     # Game logic (Check for collisions, update points, etc.)
-    ''' move the player in horizontal direction '''
+    ''' move the player in horizontal direction '''        
+     if stage == PLAYING:
+     
     player1[0] += vel1[0]
 
-    '''Timer'''
-    if stage == PLAYING:
-        ticks += 1
-
-        if ticks % refresh_rate == 0:
-            time_remaining -= 1
-
-        if time_remaining == 0:
-            stage = END
             
     ''' resolve collisions horizontally '''
     for w in walls:
@@ -135,6 +136,7 @@ while not done:
                 player1[1] = w[1] - player1[3]
             if vel1[1]< 0:
                 player1[1] = w[1] + w[3]
+
 
 
     ''' here is where you should resolve player collisions with screen edges '''
@@ -159,6 +161,15 @@ while not done:
     if len(coins) == 0:
         win = True
 
+    ''' timer stuff '''
+    if stage == PLAYING:
+        ticks += 1
+
+        if ticks % refresh_rate == 0:
+            time_remaining -= 1
+
+        if time_remaining == 0:
+            stage = END
         
     # Drawing code (Describe the picture. It isn't actually drawn yet.)
     screen.fill(BLACK)
