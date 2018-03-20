@@ -26,6 +26,9 @@ BLACK = (0, 0, 0)
 YELLOW = (255, 255, 0)
 GREEN = (0, 255, 0)
 
+# Fonts
+MY_FONT = pygame.font.Font(None, 50)
+
 # stages
 START = 0
 PLAYING = 1
@@ -75,6 +78,7 @@ def setup():
     
 # Game loop
 win = False
+lose = False
 done = False
 
 setup()
@@ -85,84 +89,87 @@ while not done:
         if event.type == pygame.QUIT:
             done = True
 
-    pressed = pygame.key.get_pressed()
-    
-if stage == START:
-    if event.key == pygame.K_SPACE:
-        stage = PLAYING
+        if event.type == pygame.KEYDOWN:
+            if stage == START:
+                if event.key == pygame.K_SPACE:
+                    stage = PLAYING
                     
-    up = pressed[pygame.K_UP]
-    down = pressed[pygame.K_DOWN]
-    left = pressed[pygame.K_LEFT]
-    right = pressed[pygame.K_RIGHT]
+            elif stage == PLAYING:
+                pass
 
-    if left:
-        vel1[0] = -player1_speed
-    elif right:
-        vel1[0] = player1_speed
-    else:
-        vel1[0] = 0
+            elif stage == END:
+                pass
 
-    if up:
-        vel1[1] = -player1_speed
-    elif down:
-        vel1[1] = player1_speed
-    else:
-        vel1[1] = 0
+    if stage == PLAYING:
+        pressed = pygame.key.get_pressed()
+        
+        up = pressed[pygame.K_UP]
+        down = pressed[pygame.K_DOWN]
+        left = pressed[pygame.K_LEFT]
+        right = pressed[pygame.K_RIGHT]
+
+        if left:
+            vel1[0] = -player1_speed
+        elif right:
+            vel1[0] = player1_speed
+        else:
+            vel1[0] = 0
+
+        if up:
+            vel1[1] = -player1_speed
+        elif down:
+            vel1[1] = player1_speed
+        else:
+            vel1[1] = 0
         
         
     # Game logic (Check for collisions, update points, etc.)
     ''' move the player in horizontal direction '''        
-     if stage == PLAYING:
-     
-    player1[0] += vel1[0]
-
-            
-    ''' resolve collisions horizontally '''
-    for w in walls:
-        if intersects.rect_rect(player1, w):        
-            if vel1[0] > 0:
-                player1[0] = w[0] - player1[2]
-            elif vel1[0] < 0:
-                player1[0] = w[0] + w[2]
-
-    ''' move the player in vertical direction '''
-    player1[1] += vel1[1]
-    
-    ''' resolve collisions vertically '''
-    for w in walls:
-        if intersects.rect_rect(player1, w):                    
-            if vel1[1] > 0:
-                player1[1] = w[1] - player1[3]
-            if vel1[1]< 0:
-                player1[1] = w[1] + w[3]
-
-
-
-    ''' here is where you should resolve player collisions with screen edges '''
-
-
-
-
-    ''' get the coins '''
-    hit_list = []
-
-    for c in coins:
-        if intersects.rect_rect(player1, c):
-            hit_list.append(c)
-     
-    hit_list = [c for c in coins if intersects.rect_rect(player1, c)]
-    
-    for hit in hit_list:
-        coins.remove(hit)
-        score1 += 1
-        print("sound!")
-        
-    if len(coins) == 0:
-        win = True
-
-    ''' timer stuff '''
     if stage == PLAYING:
+        player1[0] += vel1[0]
+
+        ''' resolve collisions horizontally '''
+        for w in walls:
+            if intersects.rect_rect(player1, w):        
+                if vel1[0] > 0:
+                    player1[0] = w[0] - player1[2]
+                elif vel1[0] < 0:
+                    player1[0] = w[0] + w[2]
+
+        ''' move the player in vertical direction '''
+        player1[1] += vel1[1]
+        
+        ''' resolve collisions vertically '''
+        for w in walls:
+            if intersects.rect_rect(player1, w):                    
+                if vel1[1] > 0:
+                    player1[1] = w[1] - player1[3]
+                if vel1[1]< 0:
+                    player1[1] = w[1] + w[3]
+
+        ''' here is where you should resolve player collisions with screen edges '''
+
+
+
+
+        ''' get the coins '''
+        hit_list = []
+
+        for c in coins:
+            if intersects.rect_rect(player1, c):
+                hit_list.append(c)
+         
+        hit_list = [c for c in coins if intersects.rect_rect(player1, c)]
+        
+        for hit in hit_list:
+            coins.remove(hit)
+            score1 += 1
+            print("sound!")
+            
+        if len(coins) == 0:
+            win = True
+
+        ''' timer stuff '''
         ticks += 1
 
         if ticks % refresh_rate == 0:
@@ -176,18 +183,32 @@ if stage == START:
 
     pygame.draw.rect(screen, WHITE, player1)
     
+    ''' timer text '''
+    timer_text = MY_FONT.render(str(time_remaining), True, WHITE)
+    screen.blit(timer_text, [50, 50])
+    
     for w in walls:
         pygame.draw.rect(screen, RED, w)
 
     for c in coins:
         pygame.draw.rect(screen, YELLOW, c)
         
+    if stage == START:
+        text1 = MY_FONT.render("Coin Hunt", True, WHITE)
+        text2 = MY_FONT.render("(Press SPACE to start.)", True, WHITE)
+        screen.blit(text1, [375, 300])
+        screen.blit(text2, [250, 350])
+        
     if win:
         font = pygame.font.Font(None, 48)
         text = font.render("You Win!", 1, GREEN)
         screen.blit(text, [400, 200])
 
-    
+    if lose:
+        font = pygame.font.Font(None, 48)
+        text = font.render("You lose!", 1, GREEN)
+        screen.blit(text, [400, 200])
+        
     # Update screen (Actually draw the picture in the window.)
     pygame.display.flip()
 
