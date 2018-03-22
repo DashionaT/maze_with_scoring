@@ -14,10 +14,16 @@ TITLE = "Coin Hunt"
 screen = pygame.display.set_mode(SIZE)
 pygame.display.set_caption(TITLE)
 
-
 # Timer
 clock = pygame.time.Clock()
 refresh_rate = 60
+
+# Sounds
+wah = pygame.mixer.Sound("waluigi.ogg")
+pygame.mixer.music.load("asmr.ogg")
+splash = pygame.image.load('splash.jpg')
+
+pygame.mixer.music.play(-1) 
 
 # Colors
 RED = (255, 0, 0)
@@ -57,7 +63,7 @@ walls = [h_wall1, h_wall2, v_wall3, v_wall4, h_wall5,
 
 # Make coins
 coin1 = [300, 500, 25, 25]
-coin2 = [400, 200, 25, 25]
+coin2 = [400, 200, 25, 25]  
 coin3 = [150, 150, 25, 25]
 coin4 = [650, 300, 25, 25]
 
@@ -92,6 +98,7 @@ while not done:
         if event.type == pygame.KEYDOWN:
             if stage == START:
                 if event.key == pygame.K_SPACE:
+                    print("Go")
                     stage = PLAYING
                     
             elif stage == PLAYING:
