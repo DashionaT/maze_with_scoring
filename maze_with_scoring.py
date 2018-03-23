@@ -19,10 +19,8 @@ clock = pygame.time.Clock()
 refresh_rate = 60
 
 # Sounds
-wah = pygame.mixer.Sound("waluigi.ogg")
-pygame.mixer.music.load("asmr.ogg")
+pygame.mixer.music.load("upbeat.ogg")
 splash = pygame.image.load('splash.jpg')
-
 pygame.mixer.music.play(-1) 
 
 # Colors
@@ -65,11 +63,15 @@ walls = [h_wall1, h_wall2, v_wall3, v_wall4, h_wall5,
 coin1 = [300, 500, 25, 25]
 coin2 = [400, 200, 25, 25]  
 coin3 = [150, 150, 25, 25]
-coin4 = [650, 300, 25, 25]
-
+coin4 = [650, 400, 25, 25]
+coin5 = [750, 300, 25, 25]
+coin6 = [450, 100, 25, 25]
+coin7 = [575, 600, 25, 25]
+coin8 = [50, 600, 25, 25]
+coin9 = [500, 60, 25, 25]
 
 def setup():
-    global stage, time_remaining, ticks, player1, vel1, player1_speed, score1, coins
+    global stage, time_remaining, ticks, player1, vel1, player1_speed, score1, coins, win, lose
     
     stage = START
     time_remaining = 10
@@ -80,11 +82,11 @@ def setup():
     vel1 = [0, 0]
     player1_speed = 5
     score1 = 0
-    coins = [coin1, coin2, coin3, coin4]
-    
+    coins = [coin1, coin2, coin3, coin4, coin5, coin6, coin7, coin8, coin9]
+    win = False
+    lose = False
+
 # Game loop
-win = False
-lose = False
 done = False
 
 setup()
@@ -175,7 +177,10 @@ while not done:
             
         if len(coins) == 0:
             win = True
-
+            
+        elif len(coins) == 0:
+            lose = True
+        
         ''' timer stuff '''
         ticks += 1
 
@@ -201,15 +206,17 @@ while not done:
         pygame.draw.rect(screen, YELLOW, c)
         
     if stage == START:
-        text1 = MY_FONT.render("Coin Hunt", True, WHITE)
+        
+        screen.blit(splash, [0, 0])
+        text1 = MY_FONT.render("Coin Hunt!", True, WHITE)
         text2 = MY_FONT.render("(Press SPACE to start.)", True, WHITE)
-        screen.blit(text1, [375, 300])
-        screen.blit(text2, [250, 350])
+        screen.blit(text1, [400, 400])
+        screen.blit(text2, [300, 450])
         
     if win:
-        font = pygame.font.Font(None, 48)
-        text = font.render("You Win!", 1, GREEN)
-        screen.blit(text, [400, 200])
+        font = pygame.font.Font(None, 100)
+        text = font.render("You Win!", 1, WHITE)
+        screen.blit(text, [450, 500])
 
     if lose:
         font = pygame.font.Font(None, 48)
